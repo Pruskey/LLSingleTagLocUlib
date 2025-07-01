@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.core;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.limelightvision.LLResult;
@@ -8,7 +8,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 public class LLSingleTagLocalizer {
 
     private final Limelight3A limelight;
-
     private Pose3D currentPose = null;
 
     public LLSingleTagLocalizer(HardwareMap hardwareMap, String limelightName) {
@@ -17,20 +16,15 @@ public class LLSingleTagLocalizer {
         limelight.pipelineSwitch(0);
     }
 
-    public boolean updateOdometry() {
+    public Pose3D getRobotPosition() {
         LLResult result = limelight.getLatestResult();
-        if (result != null && result.isValid()) {
-            Pose3D botpose = result.getBotpose();
-            if (botpose != null) {
-                currentPose = botpose;
-                return true;
-            }
-        }
-        return false;
-    }
 
-    public Pose3D getCurrentPose() {
+        if (result != null && result.isValid()) {
+            currentPose = result.getBotpose();
+        } else {
+            currentPose = null;
+        }
+
         return currentPose;
     }
-
 }
